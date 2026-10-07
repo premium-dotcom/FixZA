@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>fixZA | Find a Plumber in Durban</title>
+<meta name="description" content="fixZA helps homeowners in Durban connect with local plumbers through WhatsApp.">
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#07111f;color:#f4f8ff;line-height:1.6}
+a{text-decoration:none;color:inherit}.container{max-width:1100px;margin:auto;padding:0 20px}
+nav{display:flex;justify-content:space-between;align-items:center;padding:20px 0}.logo{font-size:28px;font-weight:900}.logo span{color:#3da5ff}
+.btn{display:inline-block;background:#1687f8;color:white;padding:13px 20px;border-radius:10px;font-weight:800;border:0;cursor:pointer}
+.hero{padding:70px 0 55px}.hero h1{font-size:clamp(38px,7vw,68px);line-height:1.05;margin:10px 0 20px}.hero p{font-size:19px;color:#b5c5d8;max-width:650px}
+.badge{display:inline-block;background:#122b46;color:#66b7ff;padding:7px 12px;border-radius:999px;font-weight:700}
+section{padding:55px 0}.section-title{font-size:34px;margin-bottom:8px}.sub{color:#9eb0c6}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px}.card{background:#0e1b2d;border:1px solid #20344e;border-radius:16px;padding:22px}
+.card h3{margin-top:0}.muted{color:#9eb0c6}.profile .area{color:#66b7ff;font-weight:700}.profile .services{font-size:14px;color:#b9c8d9}
+footer{border-top:1px solid #20344e;padding:35px 0;color:#8fa3bb}
+.empty{padding:25px;border:1px dashed #38506e;border-radius:14px;color:#9eb0c6}
+.wa{background:#159447}.steps{counter-reset:x}.step:before{counter-increment:x;content:counter(x);display:block;width:36px;height:36px;line-height:36px;text-align:center;border-radius:50%;background:#1687f8;font-weight:900;margin-bottom:12px}
+@media(max-width:650px){nav .btn{padding:10px 13px}.hero{padding-top:45px}}
+</style>
+</head>
+<body>
+<div class="container">
+<nav>
+  <div class="logo">fix<span>ZA</span></div>
+  <a class="btn" href="https://wa.me/27796775018?text=Hi%20fixZA%2C%20I%20need%20a%20plumber.">Find a plumber</a>
+</nav>
+
+<header class="hero">
+  <span class="badge">Launching in Durban 🇿🇦</span>
+  <h1>Need a plumber?<br>Find one through fixZA.</h1>
+  <p>Tell us what you need and connect with a local plumber through WhatsApp.</p>
+  <a class="btn wa" href="https://wa.me/27796775018?text=Hi%20fixZA%2C%20I%20need%20a%20plumber.">Request a plumber on WhatsApp</a>
+</header>
+
+<section>
+<h2 class="section-title">How fixZA works</h2>
+<p class="sub">Simple for homeowners. Better opportunities for local plumbers.</p>
+<div class="grid steps">
+<div class="card step"><h3>Tell us the problem</h3><p class="muted">Send your name, area and what needs fixing.</p></div>
+<div class="card step"><h3>We find a plumber</h3><p class="muted">We use our growing local plumber network.</p></div>
+<div class="card step"><h3>Connect on WhatsApp</h3><p class="muted">You and the plumber can discuss the job directly.</p></div>
+</div>
+</section>
+
+<section id="plumbers">
+<h2 class="section-title">Our plumbers</h2>
+<p class="sub">Local plumbers currently listed on fixZA.</p>
+<div id="profiles" class="grid"><div class="empty">Loading plumber profiles...</div></div>
+</section>
+
+<section>
+<h2 class="section-title">Need a plumber now?</h2>
+<div class="card">
+<p class="muted">Send us your details on WhatsApp and we'll help connect you with a plumber.</p>
+<a class="btn wa" href="https://wa.me/27796775018?text=Hi%20fixZA%2C%20I%20need%20a%20plumber.%0A%0AName%3A%20%0AArea%3A%20%0AProblem%3A%20">WhatsApp fixZA</a>
+</div>
+</section>
+
+<section>
+<h2 class="section-title">Are you a plumber?</h2>
+<div class="card">
+<p class="muted">Join the first fixZA plumber network. We're currently building our founding network in Durban.</p>
+<a class="btn" href="https://wa.me/27796775018?text=Hi%20fixZA%2C%20I'm%20a%20plumber%20and%20I'd%20like%20to%20join%20the%20network.">Join the plumber network</a>
+</div>
+</section>
+
+<footer>© 2026 fixZA · Durban, South Africa</footer>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
+import { getFirestore, collection, getDocs, query, where } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAAQRe6ulAqWazPmFnG9sqwR41O9wXoqqA",
+  authDomain: "fixza-fe55e.firebaseapp.com",
+  projectId: "fixza-fe55e",
+  storageBucket: "fixza-fe55e.firebasestorage.app",
+  messagingSenderId: "379743377022",
+  appId: "1:379743377022:web:66ce2248d885034a41ea2f"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const box = document.getElementById("profiles");
+
+function esc(v) {
+  return String(v ?? "").replace(/[&<>"']/g, c => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+  }[c]));
+}
+
+function whatsapp(phone, business) {
+  const clean = String(phone || "").replace(/\D/g,"");
+  const message = encodeURIComponent(`Hi ${business}, I found your business on fixZA and I'd like to enquire about a plumbing job.`);
+  return `https://wa.me/${clean}?text=${message}`;
+}
+
+async function loadPlumbers() {
+  try {
+    const snap = await getDocs(query(
+      collection(db, "plumbers"),
+      where("published", "==", true)
+    ));
+
+    if (snap.empty) {
+      box.innerHTML = '<div class="empty">Our plumber network is growing. Check back soon.</div>';
+      return;
+    }
+
+    box.innerHTML = "";
+    snap.forEach(doc => {
+      const p = doc.data();
+      const card = document.createElement("article");
+      card.className = "card profile";
+      card.innerHTML = `
+        <h3>${esc(p.businessName)}</h3>
+        <div class="area">${esc(p.areas)}</div>
+        <p class="services">${esc(p.services)}</p>
+        ${p.description ? `<p class="muted">${esc(p.description)}</p>` : ""}
+        ${p.years ? `<p class="muted">${esc(p.years)} years in business</p>` : ""}
+        <a class="btn wa" target="_blank" rel="noopener" href="${whatsapp(p.phone,p.businessName)}">WhatsApp plumber</a>
+      `;
+      box.appendChild(card);
+    });
+  } catch (error) {
+    console.error(error);
+    box.innerHTML = '<div class="empty">We could not load the plumber list right now. Please contact fixZA on WhatsApp.</div>';
+  }
+}
+
+loadPlumbers();
+</script>
+</body>
+</html>
