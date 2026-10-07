@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Fixza helps you connect with local plumbers quickly. Request help on WhatsApp.">
+<meta name="theme-color" content="#07111f">
+<title>Fixza — Find a Plumber Fast</title>
+<style>
+:root{--ink:#07111f;--ink2:#0e1b2f;--blue:#2563eb;--cyan:#22d3ee;--green:#16a34a;--bg:#f7f9fc;--card:#fff;--muted:#64748b;--line:#e5e7eb;--shadow:0 24px 70px rgba(15,23,42,.12)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#111827;background:var(--bg);line-height:1.55}a{text-decoration:none;color:inherit}.container{width:min(1120px,calc(100% - 32px));margin:auto}
+.nav{position:sticky;top:0;z-index:20;height:72px;background:rgba(7,17,31,.96);backdrop-filter:blur(12px);color:#fff;border-bottom:1px solid rgba(255,255,255,.08)}.navin{height:100%;display:flex;align-items:center;justify-content:space-between}.logo{font-size:27px;font-weight:950;letter-spacing:-1.5px}.logo b{color:var(--cyan)}.links{display:flex;gap:25px;align-items:center;color:#cbd5e1;font-size:14px;font-weight:700}.links a:hover{color:white}.navbtn{background:white;color:var(--ink);padding:10px 15px;border-radius:10px}
+.hero{color:#fff;background:radial-gradient(circle at 80% 10%,rgba(37,99,235,.5),transparent 34%),linear-gradient(135deg,var(--ink),#132849);padding:78px 0 90px}.grid{display:grid;grid-template-columns:1.05fr .95fr;gap:60px;align-items:center}.tag{display:inline-flex;align-items:center;gap:8px;color:#a5f3fc;background:rgba(34,211,238,.08);border:1px solid rgba(34,211,238,.2);border-radius:999px;padding:7px 12px;font-size:13px;font-weight:800;margin-bottom:19px}.dot{width:7px;height:7px;border-radius:50%;background:#22d3ee}.hero h1{font-size:clamp(43px,6.2vw,72px);line-height:.96;letter-spacing:-4px;margin:0 0 22px;max-width:700px}.hero p{font-size:19px;color:#cbd5e1;max-width:625px;margin:0 0 29px}.actions{display:flex;flex-wrap:wrap;gap:11px}.btn{border:0;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:12px;padding:14px 18px;font-weight:850;transition:.2s}.primary{background:var(--blue);color:#fff;box-shadow:0 9px 25px rgba(37,99,235,.35)}.primary:hover{background:#1d4ed8;transform:translateY(-1px)}.white{background:white;color:var(--ink)}.note{font-size:12px;color:#94a3b8;margin-top:14px}
+.card{background:#fff;color:#111827;border-radius:24px;padding:27px;box-shadow:0 30px 80px rgba(0,0,0,.27)}.card h2{font-size:25px;margin:0 0 5px;letter-spacing:-.8px}.sub{color:var(--muted);font-size:14px;margin:0 0 20px}.field{margin:0 0 13px}.field label{display:block;font-size:12px;font-weight:850;color:#334155;margin-bottom:6px}.field input,.field select,.field textarea{width:100%;border:1px solid var(--line);border-radius:10px;padding:12px 13px;outline:none;background:white}.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(37,99,235,.1)}.card .btn{width:100%}.wa{background:var(--green);color:#fff}.wa:hover{background:#15803d}.privacy{font-size:11px;color:#94a3b8;text-align:center;margin:10px 0 0}
+section{padding:76px 0}.head{text-align:center;max-width:700px;margin:0 auto 38px}.head h2{font-size:36px;line-height:1.08;letter-spacing:-1.5px;margin:0 0 10px}.head p{margin:0;color:var(--muted)}.steps,.features{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.box{background:white;border:1px solid var(--line);border-radius:20px;padding:25px;box-shadow:0 6px 22px rgba(15,23,42,.04)}.num{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;background:#dbeafe;color:var(--blue);font-weight:900;margin-bottom:17px}.box h3{margin:0 0 7px;font-size:19px}.box p{margin:0;color:var(--muted);font-size:14px}.services{background:#eef3fa}.servicegrid{display:grid;grid-template-columns:repeat(4,1fr);gap:13px}.service{background:white;border:1px solid var(--line);border-radius:17px;padding:18px;display:flex;gap:12px;align-items:center}.ico{width:40px;height:40px;display:grid;place-items:center;background:#eff6ff;border-radius:11px;font-size:19px}.service strong{font-size:14px}.service small{display:block;color:var(--muted);font-size:11px}
+.dark{background:var(--ink);color:#fff}.dark p{color:#cbd5e1}.dark h2{font-size:42px;line-height:1.06;letter-spacing:-1.7px;margin:0 0 14px}.ticks{list-style:none;padding:0;margin:23px 0}.ticks li{margin:9px 0;color:#e2e8f0}.ticks li:before{content:"✓";color:#67e8f9;font-weight:900;margin-right:10px}
+.faq{max-width:780px;margin:auto}.faq details{background:white;border:1px solid var(--line);border-radius:13px;padding:17px 18px;margin:10px 0}.faq summary{font-weight:800;cursor:pointer}.faq p{color:var(--muted);font-size:14px}
+footer{background:#050a12;color:#94a3b8;padding:32px 0}.foot{display:flex;justify-content:space-between;gap:20px}.foot strong{color:white}
+.toast{position:fixed;left:50%;bottom:22px;transform:translate(-50%,20px);background:#07111f;color:white;padding:14px 18px;border-radius:12px;box-shadow:var(--shadow);opacity:0;pointer-events:none;transition:.25s;z-index:100;font-size:14px}.toast.show{opacity:1;transform:translate(-50%,0)}
+@media(max-width:850px){.grid{grid-template-columns:1fr;gap:38px}.steps,.features{grid-template-columns:1fr}.servicegrid{grid-template-columns:repeat(2,1fr)}.links a:not(.navbtn){display:none}.hero{padding:55px 0 65px}}
+@media(max-width:520px){.container{width:calc(100% - 22px)}.nav{height:64px}.hero h1{letter-spacing:-2.5px}.hero p{font-size:17px}.head h2{font-size:30px}.dark h2{font-size:34px}.servicegrid{grid-template-columns:1fr 1fr}.foot{flex-direction:column}.card{padding:22px}}
+</style>
+</head>
+<body>
+<header class="nav">
+<div class="container navin">
+<a class="logo" href="#">Fix<b>za</b></a>
+<nav class="links"><a href="#how">How it works</a><a href="#services">Services</a><a href="#pros">For plumbers</a><a class="navbtn" href="#request">Find a plumber</a></nav>
+</div>
+</header>
+
+<main>
+<section class="hero" id="request">
+<div class="container grid">
+<div>
+<div class="tag"><span class="dot"></span> Local plumbing help</div>
+<h1>Need a plumber? Get help without the hassle.</h1>
+<p>Tell us what needs fixing and your area. Send your request straight to Fixza on WhatsApp and we'll help you find a local plumbing professional.</p>
+<div class="actions"><a class="btn primary" href="#request-form">Request a plumber →</a><a class="btn white" href="#how">How it works</a></div>
+<div class="note">Free to request • WhatsApp-friendly • No commitment</div>
+</div>
+
+<div class="card" id="request-form">
+<h2>Request a plumber</h2>
+<p class="sub">Complete the short form. We'll open WhatsApp with your request ready to send.</p>
+<form id="leadForm">
+<div class="field"><label for="name">Your name</label><input id="name" required placeholder="e.g. Ihsan"></div>
+<div class="field"><label for="phone">Your phone number</label><input id="phone" type="tel" required placeholder="e.g. 079 123 4567"></div>
+<div class="field"><label for="area">Area / suburb</label><input id="area" required placeholder="e.g. Durban North"></div>
+<div class="field"><label for="problem">What needs fixing?</label><textarea id="problem" rows="3" required placeholder="e.g. My geyser is leaking..."></textarea></div>
+<button class="btn wa" type="submit">💬 Send request on WhatsApp</button>
+<p class="privacy">Your message opens in WhatsApp. We don't store this form in this demo.</p>
+</form>
+</div>
+</div>
+</section>
+
+<section id="how">
+<div class="container">
+<div class="head"><h2>Simple for customers. Simple for you.</h2><p>Fixza is built to remove the frustrating part of finding someone to fix a problem.</p></div>
+<div class="steps">
+<div class="box"><div class="num">1</div><h3>Tell us what happened</h3><p>Describe the problem, your location and how we can reach you.</p></div>
+<div class="box"><div class="num">2</div><h3>We find the right pro</h3><p>Fixza can connect the request with local plumbing professionals.</p></div>
+<div class="box"><div class="num">3</div><h3>Agree before work starts</h3><p>Discuss availability, scope and price directly before accepting the job.</p></div>
+</div>
+</div>
+</section>
+
+<section class="services" id="services">
+<div class="container">
+<div class="head"><h2>Plumbing first. More services later.</h2><p>Start with one high-demand category and expand once Fixza has traction.</p></div>
+<div class="servicegrid">
+<div class="service"><div class="ico">🚰</div><div><strong>Leaks</strong><small>Pipes & fittings</small></div></div>
+<div class="service"><div class="ico">♨️</div><div><strong>Geysers</strong><small>Leaks & repairs</small></div></div>
+<div class="service"><div class="ico">🚿</div><div><strong>Blocked drains</strong><small>Drains & toilets</small></div></div>
+<div class="service"><div class="ico">🔧</div><div><strong>General plumbing</strong><small>Home repairs</small></div></div>
+<div class="service"><div class="ico">⚡</div><div><strong>Electrical</strong><small>Coming later</small></div></div>
+<div class="service"><div class="ico">❄️</div><div><strong>Aircon</strong><small>Coming later</small></div></div>
+<div class="service"><div class="ico">☀️</div><div><strong>Solar</strong><small>Coming later</small></div></div>
+<div class="service"><div class="ico">🧰</div><div><strong>Handyman</strong><small>Coming later</small></div></div>
+</div>
+</div>
+</section>
+
+<section class="dark" id="pros">
+<div class="container grid">
+<div><h2>Are you a plumber? Turn local demand into new jobs.</h2><p>Fixza is starting with a focused group of local plumbing professionals. Join early and help shape the service.</p>
+<ul class="ticks"><li>Get customer enquiries in your service area</li><li>Build your Fixza profile as the platform grows</li><li>Grow your reputation through future reviews</li><li>Start without expensive advertising</li></ul>
+<a class="btn white" href="https://wa.me/27796775018?text=Hi%20Fixza%2C%20I%27m%20a%20plumber%20and%20I%27d%20like%20to%20join%20the%20platform." target="_blank" rel="noopener">💬 Join Fixza on WhatsApp</a>
+</div>
+<div class="card"><h2>We're starting small.</h2><p class="sub">The first goal is simple: connect real customers with real local plumbers and make the process better.</p><a class="btn wa" href="https://wa.me/27796775018?text=Hi%20Fixza%2C%20I%27m%20interested%20in%20joining%20as%20a%20plumber." target="_blank" rel="noopener">I'm interested</a></div>
+</div>
+</section>
+
+<section>
+<div class="container"><div class="head"><h2>Questions?</h2></div>
+<div class="faq">
+<details><summary>Does Fixza do the plumbing?</summary><p>No. Fixza connects customers with independent service professionals. The plumber and customer agree on the work, price and timing.</p></details>
+<details><summary>Is it free to request a plumber?</summary><p>Yes, requesting help through this first version is free.</p></details>
+<details><summary>Are plumbers verified?</summary><p>Not yet. Verification should only be claimed after Fixza has a real verification process in place.</p></details>
+<details><summary>Where does Fixza operate?</summary><p>Fixza is designed to launch in one local area first and expand as more professionals join.</p></details>
+</div></div>
+</section>
+</main>
+
+<footer><div class="container foot"><div><strong>Fixza</strong><br><small>Find local help. Fix problems faster.</small></div><small>© <span id="year"></span> Fixza</small></div></footer>
+<div class="toast" id="toast">Opening WhatsApp…</div>
+
+<script>
+const FIXZA_NUMBER="27796775018";
+document.getElementById("year").textContent=new Date().getFullYear();
+document.getElementById("leadForm").addEventListener("submit",function(e){
+ e.preventDefault();
+ const name=document.getElementById("name").value.trim();
+ const phone=document.getElementById("phone").value.trim();
+ const area=document.getElementById("area").value.trim();
+ const problem=document.getElementById("problem").value.trim();
+ const message=`Hi Fixza! 👋\n\nI need a plumber.\n\nName: ${name}\nMy phone: ${phone}\nArea: ${area}\nProblem: ${problem}\n\nPlease let me know if you can help me find a local plumber.`;
+ document.getElementById("toast").classList.add("show");
+ setTimeout(()=>document.getElementById("toast").classList.remove("show"),2200);
+ window.open(`https://wa.me/${FIXZA_NUMBER}?text=${encodeURIComponent(message)}`,"_blank","noopener");
+});
+</script>
+</body>
+</html>
