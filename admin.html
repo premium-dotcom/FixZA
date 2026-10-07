@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>fixZA Admin</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#0b1220;color:#eef4ff}.wrap{max-width:900px;margin:auto;padding:24px}
+.card{background:#111c2e;border:1px solid #243653;border-radius:16px;padding:20px;margin:16px 0}h1{margin:0 0 6px}.muted{color:#9fb0c8}
+label{display:block;margin:12px 0 6px;font-weight:700}input,textarea{width:100%;padding:12px;border-radius:10px;border:1px solid #38506f;background:#0a1424;color:white}
+textarea{min-height:90px}button{padding:11px 16px;border:0;border-radius:10px;background:#2f80ed;color:white;font-weight:700;cursor:pointer;margin:6px 6px 0 0}
+.danger{background:#c0392b}.hidden{display:none}.profile{border-top:1px solid #293b56;padding:15px 0}.tag{display:inline-block;background:#1c3555;padding:5px 9px;border-radius:999px;margin:3px;font-size:13px}
+</style></head><body><div class="wrap">
+<div class="card"><h1>fixZA Admin</h1><div class="muted">Private plumber profile manager</div></div>
+<section id="loginBox" class="card"><h2>Admin login</h2>
+<label>Email</label><input id="email" type="email" autocomplete="username" value="ihsanthegoated@gmail.com">
+<label>Password</label><input id="password" type="password" autocomplete="current-password">
+<button id="loginBtn">Log in</button><p id="loginMsg" class="muted"></p></section>
+<section id="app" class="hidden">
+<div class="card"><button id="logoutBtn">Log out</button><h2>Add plumber</h2>
+<label>Business name</label><input id="businessName" placeholder="e.g. Durban Pro Plumbing">
+<label>Contact person</label><input id="contactName" placeholder="e.g. Ahmed">
+<label>WhatsApp number</label><input id="phone" placeholder="e.g. 27821234567">
+<label>Areas served</label><input id="areas" placeholder="e.g. Durban, Umhlanga, Pinetown">
+<label>Services</label><input id="services" placeholder="e.g. Leaks, blocked drains, geysers">
+<label>Years in business</label><input id="years" type="number" min="0">
+<label>Short description</label><textarea id="description"></textarea>
+<label><input id="published" type="checkbox" checked style="width:auto"> Publish on public fixZA site</label>
+<button id="saveBtn">Save plumber</button><p id="saveMsg" class="muted"></p></div>
+<div class="card"><h2>Saved plumbers</h2><div id="profiles"><p class="muted">Loading...</p></div></div>
+</section></div>
+<script type="module">
+import{initializeApp}from"https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
+import{getAuth,signInWithEmailAndPassword,onAuthStateChanged,signOut}from"https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
+import{getFirestore,collection,addDoc,getDocs,deleteDoc,doc,updateDoc,serverTimestamp,query,orderBy}from"https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
+const firebaseConfig={apiKey:"AIzaSyAAQRe6ulAqWazPmFnG9sqwR41O9wXoqqA",authDomain:"fixza-fe55e.firebaseapp.com",projectId:"fixza-fe55e",storageBucket:"fixza-fe55e.firebasestorage.app",messagingSenderId:"379743377022",appId:"1:379743377022:web:66ce2248d885034a41ea2f"};
+const ADMIN_EMAIL="ihsanthegoated@gmail.com",app=initializeApp(firebaseConfig),auth=getAuth(app),db=getFirestore(app),$=id=>document.getElementById(id);
+$("loginBtn").onclick=async()=>{ $("loginMsg").textContent="Logging in...";try{await signInWithEmailAndPassword(auth,$("email").value.trim(),$("password").value);$("loginMsg").textContent=""}catch(e){$("loginMsg").textContent="Login failed: "+e.message}};
+$("logoutBtn").onclick=()=>signOut(auth);
+onAuthStateChanged(auth,async u=>{if(u&&u.email===ADMIN_EMAIL){$("loginBox").classList.add("hidden");$("app").classList.remove("hidden");await loadProfiles()}else{$("app").classList.add("hidden");$("loginBox").classList.remove("hidden");if(u)await signOut(auth)}});
+$("saveBtn").onclick=async()=>{ $("saveMsg").textContent="Saving...";const d={businessName:$("businessName").value.trim(),contactName:$("contactName").value.trim(),phone:$("phone").value.trim(),areas:$("areas").value.trim(),services:$("services").value.trim(),years:Number($("years").value||0),description:$("description").value.trim(),published:$("published").checked,createdAt:serverTimestamp(),updatedAt:serverTimestamp()};if(!d.businessName||!d.phone||!d.areas||!d.services){$("saveMsg").textContent="Please fill in business name, WhatsApp, areas and services.";return}try{await addDoc(collection(db,"plumbers"),d);$("saveMsg").textContent="Plumber saved successfully.";["businessName","contactName","phone","areas","services","years","description"].forEach(id=>$(id).value="");$("published").checked=true;await loadProfiles()}catch(e){$("saveMsg").textContent="Could not save: "+e.message}};
+async function loadProfiles(){const b=$("profiles");b.innerHTML="<p class='muted'>Loading...</p>";try{const s=await getDocs(query(collection(db,"plumbers"),orderBy("createdAt","desc")));if(s.empty){b.innerHTML="<p class='muted'>No plumbers added yet.</p>";return}b.innerHTML="";s.forEach(x=>{const p=x.data(),e=document.createElement("div");e.className="profile";e.innerHTML="<h3>"+esc(p.businessName||"")+"</h3><div class='muted'>"+esc(p.contactName||"")+" · "+esc(p.phone||"")+"</div><p>"+esc(p.description||"")+"</p><span class='tag'>"+esc(p.areas||"")+"</span><span class='tag'>"+esc(p.services||"")+"</span><span class='tag'>"+(p.published?"Published":"Hidden")+"</span><div><button data-t>"+(p.published?"Hide":"Publish")+"</button><button class='danger' data-d>Delete</button></div>";e.querySelector("[data-t]").onclick=async()=>{await updateDoc(doc(db,"plumbers",x.id),{published:!p.published,updatedAt:serverTimestamp()});await loadProfiles()};e.querySelector("[data-d]").onclick=async()=>{if(confirm("Delete this plumber profile?")){await deleteDoc(doc(db,"plumbers",x.id));await loadProfiles()}};b.appendChild(e)})}catch(e){b.innerHTML="<p>Could not load profiles: "+esc(e.message)+"</p>"}}
+function esc(v){return String(v).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]))}
+</script></body></html>
